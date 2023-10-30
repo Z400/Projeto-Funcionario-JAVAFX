@@ -34,8 +34,7 @@ public class viewController implements Initializable{
 	
 	@FXML
 	public void actionDepartment () {
-		System.out.println("Department");
-	}
+		loadView("/gui/DepartmentList.fxml");	}
 	
 	@FXML 
 	public void actionAbout () {
