@@ -44,7 +44,7 @@ public class DepartmentListController implements Initializable {
 	@FXML
 	public void btNewAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
-		 createDialogForm("/gui/DepartmentForm.fxml", parentStage);
+		createDialogForm("/gui/DepartmentForm.fxml", parentStage);
 	}
 
 	private ObservableList<Department> obsList;
@@ -71,6 +71,8 @@ public class DepartmentListController implements Initializable {
 
 	}
 
+	
+	//Aqui estou fazendo com que minha table busque os dados no DB e imprima-os na table!
 	public void updateTableView() {
 		if (service == null) {
 			throw new IllegalStateException("Is service is null!");
@@ -80,13 +82,13 @@ public class DepartmentListController implements Initializable {
 		obsList = FXCollections.observableArrayList(list);
 		tableViewDepartment.setItems(obsList);
 	}
-	
-	//Criando um novo estagio e cena para exibir o novo cadastro de departamento!
-	public void createDialogForm (String absoluteName, Stage parentStage) {
+
+	// Criando um novo estagio e cena para exibir o novo cadastro de departamento!
+	public void createDialogForm(String absoluteName, Stage parentStage) {
 		try {
-			
+
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			
+
 			Pane pane = loader.load();
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Enter department data");
@@ -95,13 +97,10 @@ public class DepartmentListController implements Initializable {
 			dialogStage.initOwner(parentStage);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
-			
-			
+
 		} catch (Exception e) {
-			Alerts.showAlert("IoException" , "Error loading view!", e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("IoException", "Error loading view!", e.getMessage(), AlertType.ERROR);
 		}
 	}
-	
-	
 
 }
