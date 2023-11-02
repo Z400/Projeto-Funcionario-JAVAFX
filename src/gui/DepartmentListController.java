@@ -44,7 +44,8 @@ public class DepartmentListController implements Initializable {
 	@FXML
 	public void btNewAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
-		createDialogForm("/gui/DepartmentForm.fxml", parentStage);
+		 Department obj = new Department();
+		createDialogForm(obj, "/gui/DepartmentForm.fxml", parentStage);
 	}
 
 	private ObservableList<Department> obsList;
@@ -84,12 +85,17 @@ public class DepartmentListController implements Initializable {
 	}
 
 	// Criando um novo estagio e cena para exibir o novo cadastro de departamento!
-	public void createDialogForm(String absoluteName, Stage parentStage) {
+	public void createDialogForm(Department obj, String absoluteName, Stage parentStage) {
 		try {
 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-
 			Pane pane = loader.load();
+			//Aqui eu carrego o obj controller e com ele carregado eu chamos as funções!
+			 DepartmentFormController controller = loader.getController();
+			 controller.setDepartment(obj);
+			 controller.updateFormData();
+			 
+		
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Enter department data");
 			dialogStage.setScene(new Scene(pane));
