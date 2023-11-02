@@ -63,6 +63,9 @@ public class DepartmentFormController implements Initializable{
 			throw new IllegalStateException("Entity was null!");
 		}if (service == null) {
 			throw new IllegalStateException("Service was null");
+		} if (txtName.getText() == null || txtName.getText().trim().equals("")) {
+			Alerts.showAlert("Empty!", null,"This fields is empty!", AlertType.ERROR);
+			return;
 		}
 		
 		try {
