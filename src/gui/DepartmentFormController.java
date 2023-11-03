@@ -64,15 +64,19 @@ public class DepartmentFormController implements Initializable{
 		}if (service == null) {
 			throw new IllegalStateException("Service was null");
 		} if (txtName.getText() == null || txtName.getText().trim().equals("")) {
-			Alerts.showAlert("Empty!", null,"This fields is empty!", AlertType.ERROR);
+			Alerts.showAlert("WARNING","Error during save this department!!","This field can`t be empty!!", AlertType.INFORMATION);
 			return;
 		}
 		
+		
+		
 		try {
+			
 			entity = getFormData();
 			service.saveOrUpdate(entity);
 			notifyDataChangeListener ();
 			Utils.currentStage(event).close();
+			Alerts.showAlert("Registered!", null,"Department " + txtName.getText() + " registered!", AlertType.INFORMATION);
  
 		} catch (DbException e) {
 			Alerts.showAlert("Error saving project", null, e.getMessage(), Alert.AlertType.ERROR);		}
