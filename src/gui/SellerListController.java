@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -15,7 +16,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -23,6 +26,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
 import model.services.SellerService;
@@ -39,6 +44,17 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 	@FXML
 	private TableColumn<Seller, String> tableColumnName;
+	
+	@FXML
+	private TableColumn<Seller, String> tableColumnEmail;
+	
+	@FXML
+	private TableColumn<Seller, Date> tableColumnBirthdate;
+	
+	@FXML
+	private TableColumn<Seller, Double> tableColumnBaseSalary;
+	
+	
 
 	@FXML
 	private TableColumn<Seller, Seller> tableColumnEDIT;
@@ -73,6 +89,11 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+		tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+		tableColumnBirthdate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+		Utils.formatTableColumnDate(tableColumnBirthdate, "dd/MM/yyyy");
+		tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
+		Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
 
 		// Esta linha de comando faz com que minha table acompanhe automaticamente o
 		// tamanho da minha cena
@@ -97,28 +118,28 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 	// Criando um novo estagio e cena para exibir o novo cadastro de departamento!
 	public void createDialogForm(Seller obj, String absoluteName, Stage parentStage) {
-//		try {
-//
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-//			Pane pane = loader.load();
-//			// Aqui eu carrego o obj controller e com ele carregado eu chamos as funções!
-//			SellerFormController controller = loader.getController();
-//			controller.setSeller(obj);
-//			controller.setSellerService(new SellerService());
-//			controller.updateFormData();
-//			controller.subscribeDataChangedListener(this);
-//
-//			Stage dialogStage = new Stage();
-//			dialogStage.setTitle("Enter Seller data");
-//			dialogStage.setScene(new Scene(pane));
-//			dialogStage.setResizable(false);
-//			dialogStage.initOwner(parentStage);
-//			dialogStage.initModality(Modality.WINDOW_MODAL);
-//			dialogStage.showAndWait();
-//
-//		} catch (Exception e) {
-//			Alerts.showAlert("IoException", "Error loading view!", e.getMessage(), AlertType.ERROR);
-//		}
+		try {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane = loader.load();
+			// Aqui eu carrego o obj controller e com ele carregado eu chamos as funções!
+			SellerFormController controller = loader.getController();
+			controller.setSeller(obj);
+			controller.setSellerService(new SellerService());
+			controller.updateFormData();
+			controller.subscribeDataChangedListener(this);
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Enter Seller data");
+			dialogStage.setScene(new Scene(pane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.showAndWait();
+
+		} catch (Exception e) {
+			Alerts.showAlert("IoException", "Error loading view!", e.getMessage(), AlertType.ERROR);
+		}
 	}
 
 	@Override
@@ -164,7 +185,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 }
 
 	private void removeEntity(Seller obj) {
-	Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are you sure to delete:");	 
+	Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are you sure to delete?");	 
 	
 		if (result.get() == ButtonType.OK) {
 			if (service == null) {
