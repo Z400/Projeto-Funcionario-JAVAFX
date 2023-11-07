@@ -22,11 +22,18 @@ public class Utils {
 
 	public static Integer tryParseToInt(String str) {
 		try {
-			Integer.parseInt(str);
+			return Integer.parseInt(str);
 		} catch (NumberFormatException e) {
-			e.getMessage();
+			return null;
 		}
-		return null;
+	}
+
+	public static Double tryParseToDouble(String str) {
+		try {
+			return Double.parseDouble(str);
+		} catch (NumberFormatException e) {
+			return null;
+		}
 	}
 
 	public static <T> void formatTableColumnDate(TableColumn<T, Date> tableColumn, String format) {
@@ -68,7 +75,6 @@ public class Utils {
 
 	public static void formatDatePicker(DatePicker datePicker, String format) {
 		datePicker.setConverter(new StringConverter<LocalDate>() {
-
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(format);
 			{
 				datePicker.setPromptText(format.toLowerCase());
@@ -93,5 +99,4 @@ public class Utils {
 			}
 		});
 	}
-
 }

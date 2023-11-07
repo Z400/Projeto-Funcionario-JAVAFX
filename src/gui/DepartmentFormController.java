@@ -74,7 +74,7 @@ public class DepartmentFormController implements Initializable {
 			service.saveOrUpdate(entity);
 			notifyDataChangeListener();
 			Utils.currentStage(event).close();
-			Alerts.showAlert("Registered!", null, "Department " + txtName.getText() + " registered!",
+			Alerts.showAlert("Sucessful!", null, "Department " + txtName.getText() + " altered!",
 					AlertType.INFORMATION);
 
 		} catch (DbException e) {
