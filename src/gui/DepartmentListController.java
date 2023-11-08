@@ -29,6 +29,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Department;
+import model.entities.Seller;
 import model.services.DepartmentService;
 
 public class DepartmentListController implements Initializable, DataChangeListener {
@@ -42,7 +43,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 	private TableColumn<Department, Integer> tableColumnId;
 
 	@FXML
-	private TableColumn<Department, String> tableColumnName;
+	private TableColumn<Seller, String> tableColumnName;
 
 	@FXML
 	private TableColumn<Department, Department> tableColumnEDIT;
@@ -113,7 +114,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			controller.subscribeDataChangedListener(this);
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Enter department data");
+			dialogStage.setTitle("Entre com os dados do departamento:");
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
@@ -121,7 +122,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			dialogStage.showAndWait();
 
 		} catch (Exception e) {
-			Alerts.showAlert("IoException", "Error loading view!", e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("IoException", "Erro ao carregar tela!", e.getMessage(), AlertType.ERROR);
 		}
 	}
 
@@ -134,7 +135,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 	private void initEditButtons() {
 		tableColumnEDIT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
 		tableColumnEDIT.setCellFactory(param -> new TableCell<Department, Department>() {
-			private final Button button = new Button("edit");
+			private final Button button = new Button("Editar");
 
 			@Override
 			protected void updateItem(Department obj, boolean empty) {
@@ -152,7 +153,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 	private void initRemoveButtons() { 
 		tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
 		tableColumnREMOVE.setCellFactory(param -> new TableCell<Department, Department>() { 
-		 private final Button button = new Button("remove"); 
+		 private final Button button = new Button("Remover"); 
 		 @Override
 		 protected void updateItem(Department obj, boolean empty) { 
 		 super.updateItem(obj, empty); 
@@ -168,16 +169,17 @@ public class DepartmentListController implements Initializable, DataChangeListen
 }
 
 	private void removeEntity(Department obj) {
-	Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are you sure to delete:");	 
+	Optional<ButtonType> result = Alerts.showConfirmation("Confirmacao", "Deletar departamento?");	 
 	
 		if (result.get() == ButtonType.OK) {
 			if (service == null) {
 				throw new IllegalStateException();
 			}try {
 				service.remove(obj);
+				Alerts.showAlert("Removido!", null, "Departamento deletado!", AlertType.INFORMATION);
 			updateTableView();
 			} catch (DbIntegrityException e) {
-				Alerts.showAlert("Erro removing object!", null, e.getMessage(), AlertType.ERROR);	 
+				Alerts.showAlert("Erro removing object!", null, "Voce tem funcionarios vinculados a este departamento!", AlertType.ERROR);	 
 			}
 			
 		}

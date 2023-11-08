@@ -109,12 +109,13 @@ public class SellerFormController implements Initializable {
 		try {
 			entity = getFormData();
 			service.saveOrUpdate(entity);
+			Alerts.showAlert("Atualizado com sucesso!", null, "Funcionario atualizado!", AlertType.INFORMATION);
 			notifyDataChangeListeners();
 			Utils.currentStage(event).close();
 		} catch (ValidationException e) {
 			setErrorMessages(e.getErrors());
 		} catch (DbException e) {
-			Alerts.showAlert("Error saving object", null, e.getMessage(), AlertType.ERROR);
+			Alerts.showAlert("Erro ao cadastrar!", null, e.getMessage(), AlertType.ERROR);
 		}
 	}
 
@@ -132,17 +133,17 @@ public class SellerFormController implements Initializable {
 		obj.setId(Utils.tryParseToInt(txtId.getText()));
 
 		if (txtName.getText() == null || txtName.getText().trim().equals("")) {
-			exception.addError("name", "Field can't be empty");
+			exception.addError("name", "Campo vazio!");
 		}
 		obj.setName(txtName.getText());
 
 		if (txtEmail.getText() == null || txtEmail.getText().trim().equals("")) {
-			exception.addError("email", "Field can't be empty");
+			exception.addError("email", "Campo vazio!");
 		}
 		obj.setEmail(txtEmail.getText());
 		
 		if (dpBirthDate.getValue() == null) {
-			exception.addError("birthDate", "Field can't be empty");
+			exception.addError("birthDate", "Campo vazio!");
 		}
 		else {
 			Instant instant = Instant.from(dpBirthDate.getValue().atStartOfDay(ZoneId.systemDefault()));
@@ -150,7 +151,7 @@ public class SellerFormController implements Initializable {
 		}
 		
 		if (txtBaseSalary.getText() == null || txtBaseSalary.getText().trim().equals("")) {
-			exception.addError("baseSalary", "Field can't be empty");
+			exception.addError("baseSalary", "Campo vazio!");
 		}
 		obj.setBaseSalary(Utils.tryParseToDouble(txtBaseSalary.getText()));
 		

@@ -29,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.entities.Department;
 import model.entities.Seller;
 import model.services.DepartmentService;
 import model.services.SellerService;
@@ -50,13 +51,15 @@ public class SellerListController implements Initializable, DataChangeListener {
 	private TableColumn<Seller, String> tableColumnEmail;
 	
 	@FXML
+	private TableColumn<Department, String> tableColumnDepartment;
+	
+	@FXML
 	private TableColumn<Seller, Date> tableColumnBirthdate;
 	
 	@FXML
 	private TableColumn<Seller, Double> tableColumnBaseSalary;
 	
 	
-
 	@FXML
 	private TableColumn<Seller, Seller> tableColumnEDIT;
 
@@ -83,18 +86,19 @@ public class SellerListController implements Initializable, DataChangeListener {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		initializeNodes();
+		
 
 	}
 
 	private void initializeNodes() {
-
-		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+ 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 		tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 		tableColumnBirthdate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
 		Utils.formatTableColumnDate(tableColumnBirthdate, "dd/MM/yyyy");
 		tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
 		Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
+		
 
 		// Esta linha de comando faz com que minha table acompanhe automaticamente o
 		// tamanho da minha cena
@@ -153,11 +157,12 @@ public class SellerListController implements Initializable, DataChangeListener {
 	private void initEditButtons() {
 		tableColumnEDIT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
 		tableColumnEDIT.setCellFactory(param -> new TableCell<Seller, Seller>() {
-			private final Button button = new Button("edit");
+			private final Button button = new Button("Editar");
 
 			@Override
 			protected void updateItem(Seller obj, boolean empty) {
 				super.updateItem(obj, empty);
+				 
 				if (obj == null) {
 					setGraphic(null);
 					return;
@@ -171,7 +176,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 	private void initRemoveButtons() { 
 		tableColumnREMOVE.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue())); 
 		tableColumnREMOVE.setCellFactory(param -> new TableCell<Seller, Seller>() { 
-		 private final Button button = new Button("remove"); 
+		 private final Button button = new Button("Remover"); 
 		 @Override
 		 protected void updateItem(Seller obj, boolean empty) { 
 		 super.updateItem(obj, empty); 
@@ -187,16 +192,17 @@ public class SellerListController implements Initializable, DataChangeListener {
 }
 
 	private void removeEntity(Seller obj) {
-	Optional<ButtonType> result = Alerts.showConfirmation("Confirmation", "Are you sure to delete?");	 
+	Optional<ButtonType> result = Alerts.showConfirmation("Confirmacao", " deseja deletar este funcionário?");	 
 	
 		if (result.get() == ButtonType.OK) {
 			if (service == null) {
 				throw new IllegalStateException();
 			}try {
 				service.remove(obj);
+				Alerts.showAlert("Removido com sucesso!", null, " Funcionario removido!", AlertType.INFORMATION);
 			updateTableView();
 			} catch (DbIntegrityException e) {
-				Alerts.showAlert("Erro removing object!", null, e.getMessage(), AlertType.ERROR);	 
+				Alerts.showAlert("Erro ao remover funcionario!", null, e.getMessage(), AlertType.ERROR);	 
 			}
 			
 		}

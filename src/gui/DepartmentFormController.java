@@ -58,13 +58,13 @@ public class DepartmentFormController implements Initializable {
 	@FXML
 	public void onBtSaveAction(ActionEvent event) {
 		if (entity == null) {
-			throw new IllegalStateException("Entity was null!");
+			throw new IllegalStateException("Entidade vazia!");
 		}
 		if (service == null) {
-			throw new IllegalStateException("Service was null");
+			throw new IllegalStateException("Servico vazio!");
 		}
 		if (txtName.getText() == null || txtName.getText().trim().equals("")) {
-			Alerts.showAlert("WARNING", "Error during save this department!!", "This field can`t be empty!!",
+			Alerts.showAlert("Alerta!", "Erro durante salvar departamento!!!", "Há campos a serem preenchidos!",
 					AlertType.INFORMATION);
 			return;
 		}
@@ -74,11 +74,10 @@ public class DepartmentFormController implements Initializable {
 			service.saveOrUpdate(entity);
 			notifyDataChangeListener();
 			Utils.currentStage(event).close();
-			Alerts.showAlert("Sucessful!", null, "Department " + txtName.getText() + " altered!",
-					AlertType.INFORMATION);
+		Alerts.showAlert("INFORMAÇÕES INSERIDAS!", null, "Departamento registrado!", AlertType.INFORMATION);
 
 		} catch (DbException e) {
-			Alerts.showAlert("Error saving project", null, e.getMessage(), Alert.AlertType.ERROR);
+			Alerts.showAlert("Erro ao salvar departamento!", null, e.getMessage(), Alert.AlertType.ERROR);
 		}
 
 	}
@@ -117,7 +116,7 @@ public class DepartmentFormController implements Initializable {
 
 	public void updateFormData() {
 		if (entity == null) {
-			throw new IllegalStateException("Service was null!");
+			throw new IllegalStateException("Servico vazio!");
 		}
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
